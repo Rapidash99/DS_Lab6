@@ -14,18 +14,11 @@ class ClientListener(Thread):
     def run(self):
         file_name = self.sock.recv(1024).decode()
         if os.path.isfile(file_name):
-            i = 0
-            while True:
+            for i in range(1000000000):
                 index = file_name.rindex('.')
-                if os.path.isfile(file_name[:index] + '(Copy_' + str(i) + ')' + file_name[index:]):
-                    i = i + 1
-                else:
+                if not os.path.isfile(file_name[:index] + '(Copy_' + str(i) + ')' + file_name[index:]):
                     file_name = file_name[:index] + '(Copy_' + str(i) + ')' + file_name[index:]
                     break
-        else:
-            sock.send("There are no file with given name".encode())
-            sock.close()
-            exit("There are no file with given name")
 
         file = open(file_name, 'wb')
         message = '{file_name} created'
